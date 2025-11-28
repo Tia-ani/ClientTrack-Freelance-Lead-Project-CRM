@@ -11,12 +11,12 @@ const ApiURL = () => {
   return "http://localhost:3000";
 };
 
+import * as SecureStore from "expo-secure-store";
+
 const API = axios.create({
-  baseURL: ApiURL(),
-  headers: { 'Content-Type': "application/json" }
+  baseURL: "http://11.6.2.181:3000",   //your LAN IP
 });
 
-// Interceptor to attach token to all requests
 API.interceptors.request.use(async (config) => {
   const token = await SecureStore.getItemAsync("token");
   if (token) {
