@@ -1,12 +1,15 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
 import API from "../../services/api.js";
+import { AuthContext } from "../../context/AuthContext.jsx";
 
 export default function SignupScreen({ navigation }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const { loginUser } = useContext(AuthContext);
 
   const handleSignup = async () => {
     if (!name || !email || !password) {
@@ -21,11 +24,10 @@ export default function SignupScreen({ navigation }) {
         email,
         password,
       });
-  
-      alert("Account created successfully! Please login.");
-      navigation.navigate("Login");
+      loginUser(res.data.token, res.data.user);
     } catch (err) {
-      const message = err.response?.data?.message || "Signup failed. Please try again.";
+      console.log("Signup Error:", err);
+      const message = err.response?.data?.message || err.message || "Signup failed. Please try again.";
       alert(message);
     } finally {
       setLoading(false);
@@ -33,11 +35,11 @@ export default function SignupScreen({ navigation }) {
   };
 
   return (
-    <KeyboardAvoidingView 
+    <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={styles.container}
     >
-      <ScrollView 
+      <ScrollView
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
@@ -85,8 +87,8 @@ export default function SignupScreen({ navigation }) {
             />
           </View>
 
-          <TouchableOpacity 
-            style={[styles.button, loading && styles.buttonDisabled]} 
+          <TouchableOpacity
+            style={[styles.button, loading && styles.buttonDisabled]}
             onPress={handleSignup}
             disabled={loading}
           >
@@ -101,7 +103,7 @@ export default function SignupScreen({ navigation }) {
             <View style={styles.dividerLine} />
           </View>
 
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.linkButton}
             onPress={() => navigation.navigate("Login")}
           >
