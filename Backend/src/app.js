@@ -1,8 +1,8 @@
 const express = require("express");
 const cors = require("cors");
 const authRoutes = require("./routes/authRoutes");
-const leadRoutes = require("./routes/leadRoutes");
-const projectRoutes = require("./routes/projectRoutes");
+// const leadRoutes = require("./routes/leadRoutes");
+// const projectRoutes = require("./routes/projectRoutes");
 
 const app = express();
 app.use(cors());
@@ -12,7 +12,7 @@ app.get("/", (req, res) => {
     res.send("ClientTrack Backend Running...");
 });
 app.use("/auth", authRoutes);
-app.use("/leads", leadRoutes);
-app.use("/projects", projectRoutes);
+// app.use("/leads", leadRoutes);
+// app.use("/projects", projectRoutes);
 
 module.exports = app;
